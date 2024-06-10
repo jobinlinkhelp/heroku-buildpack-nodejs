@@ -378,7 +378,9 @@ build_dependencies() {
 
   cache_status="$(get_cache_status "$CACHE_DIR")"
   start=$(nowms)
-  
+
+  echo "BUILD_DIR: $BUILD_DIR"
+
   # Check if node_modules exists
   if [ -d "$BUILD_DIR/node_modules" ]; then
     echo "Using existing node_modules directory. Skipping dependency installation."
