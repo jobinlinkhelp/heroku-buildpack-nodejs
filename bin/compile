@@ -393,15 +393,20 @@ build_dependencies() {
   else
     echo "No existing node_modules directory found. Installing dependencies..."
     if [[ "$YARN_2" == "true" ]]; then
+      echo "COMMAND A"
       yarn_2_install "$BUILD_DIR"
     elif $YARN; then
+      echo "COMMAND B"
       yarn_node_modules "$BUILD_DIR"
     elif $PNPM; then
-      pnpm_install "$BUILD_DIR" "$CACHE_DIR"
+      echo "COMMAND C"
+      pnpm_install "$BUILD_DIR" "$CACHE_DIR"      
     elif $PREBUILD; then
+      echo "COMMAND D"
       echo "Prebuild detected (node_modules already exists)"
       npm_rebuild "$BUILD_DIR"
     else
+      echo "COMMAND E"
       npm_node_modules "$BUILD_DIR"
     fi
   fi
