@@ -381,6 +381,30 @@ build_dependencies() {
 
   echo "BUILD_DIR: $BUILD_DIR"
 
+  # List all files and folders inside BUILD_DIR
+  echo "Listing all files and folders inside BUILD_DIR:"
+  ls -la "$BUILD_DIR"
+
+  cp -r "$EXISTING_NODE_MODULES" "$BUILD_DIR"
+
+  # Check if node_modules exists
+  if [ -d "$BUILD_DIR/node_modules" ]; then
+    echo "Using existing node_modules directory. Skipping dependency installation."
+  else
+    echo "No existing node_modules directory found. Installing dependencies..."
+    if [[ "$YARN_2" == "true" ]]; then
+      yarn_2_install "$BUILD_DIR"
+    elif $YARN; then
+      yarn_node_modules "$BUILD_DIR"
+    elif $PNPM; then
+      pnpm_install "$BUILD_DIR" "$CACHE_DIR"
+    elif $PREBUILD; then
+      echo "Prebuild detected (node_modules already exists)"
+      npm_rebuild "$BUILD_DIR"
+    else
+      npm_node_modules "$BUILD_DIR"
+    fi
+  fi
 
   mtime "modules.time.cache.$cache_status" "${start}"
 
